@@ -1,0 +1,210 @@
+/*
+ * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
+ * Keep every @import in this top block. Web fonts load via <link> in src/routes/__root.tsx.
+ */
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-lavender: var(--lavender);
+  --color-lavender-deep: var(--lavender-deep);
+  --color-leaf: var(--leaf);
+  --color-mint: var(--mint);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-mint-soft: var(--mint-soft);
+  --color-leaf-soft: var(--leaf-soft);
+  --color-safe: var(--safe);
+  --color-safe-soft: var(--safe-soft);
+  --color-caution: var(--caution);
+  --color-caution-soft: var(--caution-soft);
+  --color-caution-foreground: var(--caution-foreground);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 1rem;
+  /* Blanco perla */
+  --background: oklch(0.988 0.008 80);
+  --foreground: oklch(0.29 0.045 325);
+  --card: oklch(0.997 0.003 85 / 0.8);
+  --sky: oklch(0.45 0.09 240);
+  --sky-soft: oklch(0.94 0.035 235);
+  --mint: oklch(0.52 0.08 185);
+  --mint-soft: oklch(0.94 0.045 180);
+  --card-foreground: oklch(0.29 0.045 325);
+  --popover: oklch(0.997 0.003 85);
+  --popover-foreground: oklch(0.29 0.045 325);
+  /* Buganvilia / rosa mexicano */
+  --primary: oklch(0.55 0.2 355);
+  --primary-foreground: oklch(0.99 0.006 85);
+  --primary-soft: oklch(0.95 0.035 355);
+  /* Lavanda suave */
+  --secondary: oklch(0.94 0.035 305);
+  --secondary-foreground: oklch(0.36 0.09 305);
+  --lavender: oklch(0.86 0.06 305);
+  --lavender-deep: oklch(0.47 0.12 302);
+  --muted: oklch(0.958 0.02 305);
+  --muted-foreground: oklch(0.47 0.035 315);
+  /* Verde de plantas (solo decorativo: ramas y hojas, no es el verde del semáforo) */
+  --leaf: oklch(0.55 0.1 128);
+  --leaf-soft: oklch(0.94 0.04 128);
+  /* Dorado */
+  --accent: oklch(0.93 0.05 85);
+  --accent-foreground: oklch(0.36 0.07 70);
+  --gold: oklch(0.74 0.13 78);
+  --gold-soft: oklch(0.95 0.045 88);
+  --gold-foreground: oklch(0.34 0.07 65);
+  /* Semáforo */
+  --safe: oklch(0.56 0.13 155);
+  --safe-soft: oklch(0.95 0.04 155);
+  --caution: oklch(0.78 0.15 80);
+  --caution-soft: oklch(0.96 0.055 88);
+  --caution-foreground: oklch(0.38 0.08 65);
+  --danger: oklch(0.53 0.21 25);
+  --danger-soft: oklch(0.95 0.035 25);
+  --danger-foreground: oklch(0.99 0.006 85);
+  --destructive: oklch(0.53 0.21 25);
+  --destructive-foreground: oklch(0.99 0.006 85);
+  --border: oklch(0.9 0.03 305);
+  --input: oklch(0.88 0.025 310);
+  --ring: oklch(0.55 0.2 355);
+  --chart-1: oklch(0.55 0.2 355);
+  --chart-2: oklch(0.47 0.12 302);
+  --chart-3: oklch(0.74 0.13 78);
+  --chart-4: oklch(0.56 0.13 155);
+  --chart-5: oklch(0.78 0.15 80);
+  --sidebar: oklch(0.985 0.007 85);
+  --sidebar-foreground: oklch(0.29 0.045 325);
+  --sidebar-primary: oklch(0.55 0.2 355);
+  --sidebar-primary-foreground: oklch(0.99 0.006 85);
+  --sidebar-accent: oklch(0.94 0.035 305);
+  --sidebar-accent-foreground: oklch(0.36 0.09 305);
+  --sidebar-border: oklch(0.91 0.02 310);
+  --sidebar-ring: oklch(0.55 0.2 355);
+
+  --gradient-dawn: linear-gradient(165deg, oklch(0.93 0.055 305) 0%, oklch(0.988 0.008 80) 50%, oklch(0.94 0.05 355) 100%);
+  --gradient-garden: linear-gradient(90deg, oklch(0.78 0.08 305), oklch(0.62 0.18 355) 40%, oklch(0.66 0.1 128) 75%, oklch(0.78 0.08 305));
+  --gradient-bougainvillea: linear-gradient(135deg, oklch(0.55 0.2 355), oklch(0.6 0.17 335));
+  --gradient-lavender: linear-gradient(135deg, oklch(0.92 0.05 305), oklch(0.87 0.07 295));
+  --gradient-gold: linear-gradient(135deg, oklch(0.95 0.05 88), oklch(0.86 0.1 80));
+  --shadow-soft: 0 10px 30px -14px color-mix(in oklab, var(--lavender-deep) 35%, transparent);
+  --shadow-rose: 0 14px 30px -14px color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    font-size: 17px;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+}
+
+@utility bg-dawn {
+  background-image: var(--gradient-dawn);
+}
+@utility bg-garden {
+  background-image: var(--gradient-garden);
+}
+@utility bg-bougainvillea {
+  background-image: var(--gradient-bougainvillea);
+}
+@utility bg-lavender-wash {
+  background-image: var(--gradient-lavender);
+}
+@utility bg-gold-wash {
+  background-image: var(--gradient-gold);
+}
+@utility shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+@utility shadow-rose {
+  box-shadow: var(--shadow-rose);
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(0.62); opacity: 0.75; }
+  50% { transform: scale(1); opacity: 1; }
+}
+@utility animate-breathe {
+  animation: breathe 8s ease-in-out infinite;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility animate-rise {
+  animation: rise 0.35s ease-out both;
+}
+
+@utility bg-instagram {
+  background-image: linear-gradient(120deg, oklch(0.45 0.2 300), oklch(0.55 0.22 350) 50%, oklch(0.62 0.18 45));
+}
+@utility bg-instagram-soft {
+  background-image: linear-gradient(135deg, oklch(0.93 0.05 300 / 0.85), oklch(0.94 0.05 350 / 0.85) 50%, oklch(0.95 0.06 60 / 0.85));
+}
