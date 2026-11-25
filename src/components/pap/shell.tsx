@@ -43,9 +43,9 @@ export function TopBar() {
 
 export function LimitBanner() {
   return (
-    <div className="border-t border-gold/40 bg-gold-soft">
-      <p className="mx-auto max-w-md px-4 py-1.5 text-center text-[0.8rem] leading-snug text-gold-foreground">
-        Prototipo educativo. <strong>No diagnostica, no medica, no da terapia.</strong> Emergencia:{" "}
+    <div>
+      <p className="mx-auto max-w-md whitespace-nowrap px-1 py-1 text-center text-[0.52rem] uppercase tracking-tight text-muted-foreground">
+        Prototipo educativo. No diagnostica, no medica, no da terapia. Emergencia:{" "}
         <a href="tel:911" className="font-bold underline underline-offset-2">
           911
         </a>

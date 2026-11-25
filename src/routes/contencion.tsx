@@ -9,8 +9,10 @@ import { RedAlert } from "@/components/pap/semaforo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { usePlace } from "@/lib/place-context";
-import { DEFAULT_PLACE, placeLabel, type Place } from "@/lib/resources";
+import { DEFAULT_PLACE, findResources, placeLabel, type Place } from "@/lib/resources";
 import { detectRedFlags, type Level } from "@/lib/triage";
+import { TherapistSummary } from "@/components/pap/therapist-summary";
+import { addUnique, emptyRecord, type SectionKey, type SharedRecord } from "@/lib/therapist-summary";
 
 export const Route = createFileRoute("/contencion")({
   head: () => ({
@@ -44,6 +46,7 @@ type Step =
   | "conectar"
   | "cierre"
   | "peor"
+  | "resumen"
   | "oferta"
   | "fin"
   | "rojo";
@@ -81,6 +84,9 @@ const PROMPTS: Record<Step, string[]> = {
   cierre: ["Un momento antes de seguir: ¿cómo te sientes ahora, comparado con cuando llegaste?"],
   peor: [
     "Gracias por decírmelo. ¿Sientes que podrías hacerte daño o que no puedes mantenerte a salvo?",
+  ],
+  resumen: [
+    "Si te sirve, puedo preparar un resumen en PDF de lo que compartiste aquí, para que se lo des a tu terapeuta. Es opcional. Tú eliges qué incluir y se descarga solo en tu teléfono.",
   ],
   oferta: [
     "Si quieres —solo si quieres— podemos explorar algo que te dé luz: lo que se te da bien y lo que te gusta. Lo llamamos “Mi elemento”. No hay ninguna prisa.",
@@ -127,6 +133,14 @@ function Contencion() {
   const [level, setLevel] = useState<Level>("verde");
   const [msgs, setMsgs] = useState<Msg[]>(() => PROMPTS.lugar.map((t) => mk("pam", t)));
   const [draft, setDraft] = useState("");
+  const [record, setRecord] = useState<SharedRecord>(emptyRecord);
+  const [building, setBuilding] = useState(false);
+  const note = (k: SectionKey, item: string) => setRecord((r) => ({ ...r, [k]: addUnique(r[k], item) }));
+  const noteResources = () =>
+    setRecord((r) => ({
+      ...r,
+      resources: findResources(place).resources.reduce((l, x) => addUnique(l, `${x.name}: ${x.phone}`), r.resources),
+    }));
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -146,6 +160,8 @@ function Contencion() {
   const restart = () => {
     setLevel("verde");
     setDraft("");
+    setRecord(emptyRecord());
+    setBuilding(false);
     setMsgs(PROMPTS.lugar.map((t) => mk("pam", t)));
     setStep("lugar");
   };
@@ -167,6 +183,7 @@ function Contencion() {
       goRed([mine]);
       return;
     }
+    if (step === "escucha" || step === "sentir") note("feelings", text);
     if (step === "escucha") {
       go("sentir", [
         mine,
@@ -209,7 +226,7 @@ function Contencion() {
         return (
           <Chips>
             {FEELINGS.map((f) => (
-              <Chip key={f.label} onClick={() => choose(f.label, () => go("seguridad", [mk("pam", f.reply)]))}>
+              <Chip key={f.label} onClick={() => choose(f.label, () => { note("feelings", f.label); go("seguridad", [mk("pam", f.reply)]); })}>
                 {f.label}
               </Chip>
             ))}
@@ -257,6 +274,7 @@ function Contencion() {
                 onClick={() =>
                   choose(n.label, () => {
                     if (n.caution) raiseCaution();
+                    if (n.label !== "Estoy bien en eso") note("needs", n.label);
                     go("respirar", [mk("pam", n.reply)]);
                   })
                 }
@@ -271,7 +289,7 @@ function Contencion() {
           <div className="space-y-3">
             <Breathing
               onDone={() =>
-                choose("Ya respiré", () => go("conectar", [mk("pam", "Lo hiciste muy bien. Cada respiración cuenta.")]))
+                choose("Ya respiré", () => { note("helped", "Respirar despacio, acompañada o acompañado"); go("conectar", [mk("pam", "Lo hiciste muy bien. Cada respiración cuenta.")]); })
               }
             />
             <Chips>
@@ -286,38 +304,43 @@ function Contencion() {
           <Chips>
             <Chip
               onClick={() =>
-                choose("Sí, hay alguien", () =>
+                choose("Sí, hay alguien", () => {
+                  note("helped", "Pensar en una persona de confianza a quien escribir o llamar");
+                  noteResources();
                   go("cierre", [
                     mk("pam", "¿Qué tal si le escribes ahora? Puedes copiar este mensaje:"),
                     mk("pam", undefined, "mensaje"),
                     mk("pam", "Y si quieres hablar con un profesional, aquí tienes apoyos verificados:"),
                     mk("pam", undefined, "recursos"),
-                  ]),
-                )
+                  ]);
+                })
               }
             >
               Sí, hay alguien
             </Chip>
             <Chip
               onClick={() =>
-                choose("No tengo a nadie ahora", () =>
+                choose("No tengo a nadie ahora", () => {
+                  noteResources();
                   go("cierre", [
                     mk("pam", "No estás sola ni solo en esto. Hay personas capacitadas que pueden escucharte hoy:"),
                     mk("pam", undefined, "recursos"),
-                  ]),
-                )
+                  ]);
+                })
               }
             >
               No tengo a nadie ahora
             </Chip>
             <Chip
               onClick={() =>
-                choose("Prefiero un profesional", () =>
+                choose("Prefiero un profesional", () => {
+                  note("helped", "Decidir buscar apoyo profesional");
+                  noteResources();
                   go("cierre", [
                     mk("pam", "Es una gran decisión. Estos apoyos están verificados:"),
                     mk("pam", undefined, "recursos"),
-                  ]),
-                )
+                  ]);
+                })
               }
             >
               Prefiero un profesional
@@ -327,7 +350,7 @@ function Contencion() {
       case "cierre":
         return (
           <Chips>
-            <Chip onClick={() => choose("Más tranquila o tranquilo", () => go("oferta", [mk("pam", "Me alegra mucho. Esa calma también la construiste tú.")]))}>
+            <Chip onClick={() => choose("Más tranquila o tranquilo", () => go(level === "rojo" ? "oferta" : "resumen", [mk("pam", "Me alegra mucho. Esa calma también la construiste tú.")]))}>
               Más tranquila o tranquilo
             </Chip>
             <Chip
@@ -366,6 +389,32 @@ function Contencion() {
               }
             >
               No
+            </Chip>
+          </Chips>
+        );
+      case "resumen":
+        if (level === "rojo") return null;
+        return building ? (
+          <TherapistSummary
+            record={record}
+            onDone={() => {
+              setBuilding(false);
+              setRecord(emptyRecord());
+              go("oferta", [mk("pam", "Listo. Tu PDF se descargó en tu teléfono. La app no guardó ninguna copia.")]);
+            }}
+            onCancel={() => {
+              setBuilding(false);
+              setRecord(emptyRecord());
+              choose("Mejor no", () => go("oferta", [mk("pam", "Está bien. No se guardó nada.")]));
+            }}
+          />
+        ) : (
+          <Chips>
+            <Chip onClick={() => choose("Sí, quiero el resumen", () => { setBuilding(true); setMsgs((m) => [...m, mk("pam", "Aquí está. Revisa y quita lo que no quieras compartir.")]); })}>
+              Sí, quiero el resumen
+            </Chip>
+            <Chip onClick={() => choose("No, gracias", () => { setRecord(emptyRecord()); go("oferta", [mk("pam", "Está bien. No se guardó nada.")]); })}>
+              No, gracias
             </Chip>
           </Chips>
         );
