@@ -83,7 +83,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#fbf8f3" },
+      { name: "theme-color", content: "#fbf8f3", media: "(prefers-color-scheme: light)" },
+      { name: "theme-color", content: "#2b2330", media: "(prefers-color-scheme: dark)" },
       { title: "PAP de Pam, con Lanita — Primeros Auxilios Psicológicos" },
       {
         name: "description",

@@ -75,6 +75,7 @@
 }
 
 :root {
+  color-scheme: light;
   --radius: 1rem;
   /* Blanco perla */
   --background: oklch(0.988 0.008 80);
@@ -140,8 +141,84 @@
   --gradient-bougainvillea: linear-gradient(135deg, oklch(0.55 0.2 355), oklch(0.6 0.17 335));
   --gradient-lavender: linear-gradient(135deg, oklch(0.92 0.05 305), oklch(0.87 0.07 295));
   --gradient-gold: linear-gradient(135deg, oklch(0.95 0.05 88), oklch(0.86 0.1 80));
+  --gradient-instagram: linear-gradient(120deg, oklch(0.45 0.2 300), oklch(0.55 0.22 350) 50%, oklch(0.62 0.18 45));
+  --gradient-instagram-soft: linear-gradient(135deg, oklch(0.93 0.05 300 / 0.85), oklch(0.94 0.05 350 / 0.85) 50%, oklch(0.95 0.06 60 / 0.85));
   --shadow-soft: 0 10px 30px -14px color-mix(in oklab, var(--lavender-deep) 35%, transparent);
   --shadow-rose: 0 14px 30px -14px color-mix(in oklab, var(--primary) 55%, transparent);
+}
+
+/* El sistema del dispositivo elige el tema; no requiere ningún control manual. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: oklch(0.2 0.025 315);
+    --foreground: oklch(0.94 0.018 80);
+    --card: oklch(0.255 0.03 315 / 0.8);
+    --card-foreground: oklch(0.94 0.018 80);
+    --popover: oklch(0.255 0.03 315);
+    --popover-foreground: oklch(0.94 0.018 80);
+    /* La buganvilia se aclara para conservar contraste sobre el fondo oscuro. */
+    --primary: oklch(0.76 0.14 355);
+    --primary-foreground: oklch(0.24 0.06 355);
+    --primary-soft: oklch(0.29 0.055 355);
+    /* Lavanda */
+    --secondary: oklch(0.28 0.045 305);
+    --secondary-foreground: oklch(0.9 0.045 305);
+    --lavender: oklch(0.43 0.07 305);
+    --lavender-deep: oklch(0.8 0.09 302);
+    --muted: oklch(0.27 0.025 305);
+    --muted-foreground: oklch(0.78 0.025 315);
+    /* Verde de plantas */
+    --leaf: oklch(0.76 0.11 128);
+    --leaf-soft: oklch(0.27 0.05 128);
+    /* Dorado */
+    --accent: oklch(0.3 0.045 85);
+    --accent-foreground: oklch(0.9 0.05 85);
+    --gold: oklch(0.78 0.12 78);
+    --gold-soft: oklch(0.29 0.05 85);
+    --gold-foreground: oklch(0.9 0.09 85);
+    /* Celeste y menta */
+    --sky: oklch(0.8 0.09 240);
+    --sky-soft: oklch(0.27 0.04 235);
+    --mint: oklch(0.72 0.1 185);
+    --mint-soft: oklch(0.27 0.045 180);
+    /* Semáforo: tonos luminosos y separados por matiz sobre fondos oscuros suaves. */
+    --safe: oklch(0.75 0.15 155);
+    --safe-soft: oklch(0.27 0.055 155);
+    --caution: oklch(0.84 0.15 85);
+    --caution-soft: oklch(0.29 0.06 85);
+    --caution-foreground: oklch(0.9 0.11 85);
+    --danger: oklch(0.73 0.19 25);
+    --danger-soft: oklch(0.29 0.07 25);
+    --danger-foreground: oklch(0.24 0.07 25);
+    --destructive: oklch(0.73 0.19 25);
+    --destructive-foreground: oklch(0.24 0.07 25);
+    --border: oklch(0.4 0.04 305);
+    --input: oklch(0.43 0.035 310);
+    --ring: oklch(0.76 0.14 355);
+    --chart-1: oklch(0.76 0.14 355);
+    --chart-2: oklch(0.8 0.09 302);
+    --chart-3: oklch(0.78 0.12 78);
+    --chart-4: oklch(0.75 0.15 155);
+    --chart-5: oklch(0.84 0.15 85);
+    --sidebar: oklch(0.22 0.025 315);
+    --sidebar-foreground: oklch(0.94 0.018 80);
+    --sidebar-primary: oklch(0.76 0.14 355);
+    --sidebar-primary-foreground: oklch(0.24 0.06 355);
+    --sidebar-accent: oklch(0.28 0.045 305);
+    --sidebar-accent-foreground: oklch(0.9 0.045 305);
+    --sidebar-border: oklch(0.4 0.04 305);
+    --sidebar-ring: oklch(0.76 0.14 355);
+
+    --gradient-dawn: linear-gradient(165deg, oklch(0.27 0.05 305) 0%, oklch(0.2 0.025 315) 50%, oklch(0.25 0.045 355) 100%);
+    --gradient-bougainvillea: linear-gradient(135deg, oklch(0.72 0.16 355), oklch(0.74 0.15 335));
+    --gradient-lavender: linear-gradient(135deg, oklch(0.32 0.06 305), oklch(0.35 0.07 295));
+    --gradient-gold: linear-gradient(135deg, oklch(0.32 0.06 88), oklch(0.36 0.08 80));
+    --gradient-instagram: linear-gradient(120deg, oklch(0.7 0.15 300), oklch(0.72 0.17 350) 50%, oklch(0.76 0.15 45));
+    --gradient-instagram-soft: linear-gradient(135deg, oklch(0.29 0.06 300 / 0.85), oklch(0.29 0.065 350 / 0.85) 50%, oklch(0.3 0.06 60 / 0.85));
+    --shadow-soft: 0 10px 30px -14px oklch(0.08 0.02 315 / 0.75);
+    --shadow-rose: 0 14px 30px -14px oklch(0.08 0.03 355 / 0.75);
+  }
 }
 
 @layer base {
@@ -203,8 +280,8 @@
 }
 
 @utility bg-instagram {
-  background-image: linear-gradient(120deg, oklch(0.45 0.2 300), oklch(0.55 0.22 350) 50%, oklch(0.62 0.18 45));
+  background-image: var(--gradient-instagram);
 }
 @utility bg-instagram-soft {
-  background-image: linear-gradient(135deg, oklch(0.93 0.05 300 / 0.85), oklch(0.94 0.05 350 / 0.85) 50%, oklch(0.95 0.06 60 / 0.85));
+  background-image: var(--gradient-instagram-soft);
 }
