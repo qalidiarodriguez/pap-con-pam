@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { DONATE_LABEL, DONATE_NOTE, DONATE_URL } from "@/components/pap/donate-card";
 import { findResources, SIN_INTERNET, VERIFIED_RESOURCES } from "@/lib/resources";
 import { detectRedFlags } from "@/lib/triage";
 
@@ -56,5 +57,17 @@ describe("Semáforo de cada recurso", () => {
   });
   it("WhatsApp de Pam es +52 999 410 3943", () => {
     expect(SIN_INTERNET.whatsapp.url).toBe("https://wa.me/529994103943");
+  });
+});
+
+describe("Botón de donación al pie de la portada", () => {
+  it("abre exactamente el enlace de PayPal aprobado", () => {
+    expect(DONATE_URL).toBe("https://www.paypal.com/donate/?hosted_button_id=YFPB83RWWYJJN");
+  });
+  it("muestra el texto del botón y el mensaje debajo", () => {
+    expect(DONATE_LABEL).toBe("Dona aquí para mejorar esta IA");
+    expect(DONATE_NOTE).toBe(
+      "Tu donación ayuda a que PAP de Pam con Lanita siga acompañando gratis a quien se siente solo en crisis.",
+    );
   });
 });

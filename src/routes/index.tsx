@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BookOpen, ChevronRight, Flower2, Leaf, HandHeart, Heart, MapPin, ShieldCheck, Sparkles, Sprout } from "lucide-react";
 import type { ReactNode } from "react";
+import { DonateCard } from "@/components/pap/donate-card";
 import { Lanita } from "@/components/pap/lanita";
 import { Page } from "@/components/pap/shell";
 import { SinInternetCard } from "@/components/pap/sin-internet-card";
@@ -135,6 +136,8 @@ function Index() {
           .
         </p>
       </section>
+
+      <DonateCard />
     </Page>
   );
 }
